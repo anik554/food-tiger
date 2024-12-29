@@ -16,7 +16,7 @@ import GoogleLogin from "../common/GoogleLogin";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { createNewUser } = useContext(AuthContext);
+  const { createNewUser, userProfileUpdate } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -36,10 +36,8 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
-      name: userInfo.name,
+      displayName: userInfo.name,
       photoURL: userInfo.photoURL,
-      email: userInfo.email,
-      password: userInfo.password,
     };
     console.log(payload);
     const validationMessage = verifyPassword(userInfo.password);
@@ -53,7 +51,14 @@ const Register = () => {
     createNewUser(userInfo.email, userInfo.password)
       .then((result) => {
         console.log(result.user);
-        navigate("/login")
+        userProfileUpdate(payload)
+          .then(() => {
+            console.log("User Profile Updated");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        navigate("/");
       })
       .catch((err) => {
         console.error(err);

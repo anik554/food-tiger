@@ -179,8 +179,8 @@ function Navbar() {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
+                      alt={user?.displayName || user?.email}
+                      src={user?.photoURL ? user?.photoURL : user?.email}
                     />
                   </IconButton>
                 </Tooltip>
