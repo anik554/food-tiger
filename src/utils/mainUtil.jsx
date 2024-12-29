@@ -17,7 +17,8 @@ export const foods = [
     name: "Sushi Platter",
     description: "An assortment of fresh sushi rolls and sashimi.",
     price: "$18.99",
-    image: "https://i.ibb.co.com/pRs8f7V/13-07-2018-R-4-lat-50-sushi-Sushi-Party-Platter-1200x900.jpg",
+    image:
+      "https://i.ibb.co.com/pRs8f7V/13-07-2018-R-4-lat-50-sushi-Sushi-Party-Platter-1200x900.jpg",
   },
   {
     id: 3,
@@ -40,7 +41,8 @@ export const foods = [
     name: "Spaghetti Carbonara",
     description: "Creamy pasta with bacon, egg yolk, and parmesan.",
     price: "$13.99",
-    image: "https://i.ibb.co.com/hCQCHZk/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg",
+    image:
+      "https://i.ibb.co.com/hCQCHZk/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg",
   },
   {
     id: 6,
@@ -51,10 +53,21 @@ export const foods = [
   },
 ];
 
-export const verifyPassword = (password)=>{
-  const hasUppercase = /[A-Z]/.text(password);
-  const hasLowerCase = /[a-z]/.text(password);
+export const verifyPassword = (password) => {
+  
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasUppercase = /[A-Z]/.test(password);
   const isLongEnough = password.length >= 6;
 
-  return hasUppercase && hasLowerCase && isLongEnough ;
-}
+  if (!hasUppercase) {
+    return "Must have an Uppercase letter in the password";
+  }
+  if (!hasLowerCase) {
+    return "Must have a Lowercase letter in the password";
+  }
+  if (!isLongEnough) {
+    return "Length must be at least 6 character";
+  }
+
+  return "Password is valid";
+};

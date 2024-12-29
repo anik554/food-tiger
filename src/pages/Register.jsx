@@ -8,11 +8,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import GoogleIcon from "@mui/icons-material/Google";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import AuthContext from "../context/AuthContext";
+import { verifyPassword } from "../utils/mainUtil";
+import GoogleLogin from "../common/GoogleLogin";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { createNewUser } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("");
   const [userInfo, setUserInfo] = useState({
     name: "",
     photoURL: "",
@@ -37,6 +42,22 @@ const Register = () => {
       password: userInfo.password,
     };
     console.log(payload);
+    const validationMessage = verifyPassword(userInfo.password);
+    setErrorMessage("");
+
+    if (validationMessage !== "Password is valid") {
+      setErrorMessage(validationMessage);
+      return;
+    }
+
+    createNewUser(userInfo.email, userInfo.password)
+      .then((result) => {
+        console.log(result.user);
+        navigate("/login")
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   return (
     <Box
@@ -90,6 +111,11 @@ const Register = () => {
               onChange={handleChange}
               margin="normal"
             />
+            {errorMessage && (
+              <Typography variant="caption" color="red">
+                {errorMessage}
+              </Typography>
+            )}
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
               Login
             </Button>
@@ -99,19 +125,11 @@ const Register = () => {
             <Divider sx={{ my: 1 }}>
               <Chip label="or" size="small" />
             </Divider>
-            <Button
-              fullWidth
-              variant="outlined"
-              sx={{ my: 1 }}
-              startIcon={<GoogleIcon />}
-            >
-              {" "}
-              Login with Google
-            </Button>
+            <GoogleLogin />
             <Typography sx={{ my: 1 }}>
-              Don&#39;t have an account?{" "}
-              <Link to={"/register"} underline="hover">
-                Create Account
+              Have an account?{" "}
+              <Link to={"/login"} underline="hover">
+                Login
               </Link>
             </Typography>
           </Box>

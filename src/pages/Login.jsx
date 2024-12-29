@@ -8,10 +8,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import GoogleIcon from "@mui/icons-material/Google";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import AuthContext from "../context/AuthContext";
+import GoogleLogin from "../common/GoogleLogin";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { loginUser } = useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginUser(userInfo.email, userInfo.password).then((result)=>{
+      console.log(result.user)
+      navigate("/")
+    }).catch((err)=>{
+      console.log(err)
+    })
+  };
   return (
     <Box
       sx={{
@@ -27,10 +52,26 @@ const Login = () => {
           <Typography gutterBottom variant="h6">
             Login your profile
           </Typography>
-          <form action="">
-            <TextField fullWidth label="Email" size="small" margin="normal" />
-            <TextField fullWidth label="Password" size="small" />
-            <Button variant="contained" fullWidth sx={{ mt: 2 }}>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Enter Your Email"
+              name="email"
+              type="email"
+              size="small"
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Enter Your Password"
+              name="password"
+              type="password"
+              size="small"
+              onChange={handleChange}
+              margin="normal"
+            />
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
               Login
             </Button>
           </form>
@@ -39,17 +80,12 @@ const Login = () => {
             <Divider sx={{ my: 1 }}>
               <Chip label="or" size="small" />
             </Divider>
-            <Button
-              fullWidth
-              variant="outlined"
-              sx={{ my: 1 }}
-              startIcon={<GoogleIcon />}
-            >
-              {" "}
-              Login with Google
-            </Button>
+            <GoogleLogin />
             <Typography sx={{ my: 1 }}>
-              Don&#39;t have an account? <Link to={"/register"}  underline="hover">Create Account</Link>
+              Don&#39;t have an account?{" "}
+              <Link to={"/register"} underline="hover">
+                Create Account
+              </Link>
             </Typography>
           </Box>
         </CardContent>

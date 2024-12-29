@@ -15,6 +15,7 @@ import {
 import { NavLink } from "react-router-dom";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import MenuIcon from "@mui/icons-material/Menu";
+import AuthContext from "../context/AuthContext";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const pages = [
@@ -26,6 +27,7 @@ const pages = [
 ];
 
 function Navbar() {
+  const { user, logoutUser } = React.useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -43,6 +45,16 @@ function Navbar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleSignOut = () => {
+    logoutUser()
+      .then(() => {
+        console.log("Logout succefully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -162,63 +174,85 @@ function Navbar() {
 
           {/* User settings */}
           <Box sx={{ flexGrow: 0, display: "flex", gap: 1 }}>
-            <NavLink
-              to="/login"
-              style={{ textDecoration: "none" }}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <Button
-                sx={{
-                  color: "white",
-                  backgroundColor: ({ isActive }) =>
-                    isActive ? "rgba(255, 255, 255, 0.2)" : "transparent",
-                }}
-              >
-                Login
-              </Button>
-            </NavLink>
-            <NavLink
-              to="/register"
-              style={{ textDecoration: "none" }}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <Button
-                sx={{
-                  color: "white",
-                  backgroundColor: ({ isActive }) =>
-                    isActive ? "rgba(255, 255, 255, 0.2)" : "transparent",
-                }}
-              >
-                Register
-              </Button>
-            </NavLink>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {user && user?.email ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        if (setting === "Logout") {
+                          handleSignOut();
+                        }
+                      }}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  style={{ textDecoration: "none" }}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Button
+                    sx={{
+                      color: "white",
+                      backgroundColor: ({ isActive }) =>
+                        isActive ? "rgba(255, 255, 255, 0.2)" : "transparent",
+                    }}
+                  >
+                    Login
+                  </Button>
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  style={{ textDecoration: "none" }}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Button
+                    sx={{
+                      color: "white",
+                      backgroundColor: ({ isActive }) =>
+                        isActive ? "rgba(255, 255, 255, 0.2)" : "transparent",
+                    }}
+                  >
+                    Register
+                  </Button>
+                </NavLink>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>
