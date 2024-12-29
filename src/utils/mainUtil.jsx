@@ -50,3 +50,11 @@ export const foods = [
     image: "https://i.ibb.co.com/t8cRt0z/lava-cake-1.jpg",
   },
 ];
+
+export const verifyPassword = (password)=>{
+  const hasUppercase = /[A-Z]/.text(password);
+  const hasLowerCase = /[a-z]/.text(password);
+  const isLongEnough = password.length >= 6;
+
+  return hasUppercase && hasLowerCase && isLongEnough ;
+}

@@ -2,11 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
+    errorElement:"Page Not Found",
     children: [
       {
         path: "",
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/register",
-        element: "Registration Page",
+        element: <Register />,
       },
     ],
   },
