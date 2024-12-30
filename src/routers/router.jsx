@@ -3,12 +3,14 @@ import HomeLayout from "../layouts/HomeLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import AddFood from "../pages/AddFood";
+import PrivateRouter from "./PrivateRouter";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement:"Page Not Found",
+    errorElement: "Page Not Found",
     children: [
       {
         path: "",
@@ -20,7 +22,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-food",
-        element: "Add Food",
+        element: (
+          <PrivateRouter>
+            <AddFood />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/manage-my-foods",

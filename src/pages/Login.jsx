@@ -8,13 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import GoogleLogin from "../common/GoogleLogin";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginUser } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -30,12 +31,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUser(userInfo.email, userInfo.password).then((result)=>{
-      console.log(result.user)
-      navigate("/")
-    }).catch((err)=>{
-      console.log(err)
-    })
+    loginUser(userInfo.email, userInfo.password)
+      .then((result) => {
+        console.log(result.user);
+        navigate(location.state || "/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <Box
