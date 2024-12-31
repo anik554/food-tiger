@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import AuthContext from "../context/AuthContext";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddFood = () => {
   const { user } = useContext(AuthContext);
@@ -55,6 +56,8 @@ const AddFood = () => {
     const payload = {
       donarName: user?.displayName,
       donarEmail: user?.email,
+      donarPhoto: user?.photoURL,
+      foodCreatedAt: dayjs().format("MMMM DD,YYYY h:mm A"),
       foodName: foodData.foodName,
       foodImageURL: foodData.foodImageURL,
       foodQuantity: foodData.foodQuantity,
@@ -64,12 +67,18 @@ const AddFood = () => {
       notes: foodData.notes,
     };
     console.log(payload);
-    axios.post("http://localhost:5000/addFood",payload)
-    .then((res)=>{
-      console.log(res.data)
-    }).catch((err) => {
-      console.error("Error while submitting:", err);
-    });
+    axios
+      .post("http://localhost:5000/addFood", payload)
+      .then((res) => {
+        if (res.data.insertedId) {
+          toast.success("Food Added Successfully");
+        } else {
+          toast.error("Not Added Food, SomeThing is Wrong");
+        }
+      })
+      .catch((err) => {
+        console.error("Error while submitting:", err);
+      });
   };
 
   return (
