@@ -17,6 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import AuthContext from "../context/AuthContext";
 import Grid from "@mui/material/Grid2";
+import axios from "axios";
 
 const AddFood = () => {
   const { user } = useContext(AuthContext);
@@ -25,7 +26,7 @@ const AddFood = () => {
     foodImageURL: "",
     foodQuantity: "",
     foodLocation: "",
-    dateTime: dayjs(),
+    dateTime: dayjs().format("YYYY-MM-DD h:mm A"),
     status: "Available",
     notes: "",
   });
@@ -52,6 +53,8 @@ const AddFood = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
+      donarName: user?.displayName,
+      donarEmail: user?.email,
       foodName: foodData.foodName,
       foodImageURL: foodData.foodImageURL,
       foodQuantity: foodData.foodQuantity,
@@ -61,10 +64,16 @@ const AddFood = () => {
       notes: foodData.notes,
     };
     console.log(payload);
+    axios.post("http://localhost:5000/addFood",payload)
+    .then((res)=>{
+      console.log(res.data)
+    }).catch((err) => {
+      console.error("Error while submitting:", err);
+    });
   };
 
   return (
-    <Box width="100%" p={2}>
+    <Box width="100%" py={2}>
       <Paper elevation={2} sx={{ p: 4, maxWidth: 800, mx: "auto" }}>
         <Typography gutterBottom variant="h6" textAlign="center">
           Create Food
@@ -133,7 +142,7 @@ const AddFood = () => {
               <Grid size={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker
-                    label="Enter Date and Time"
+                    label="Expired Date and Time"
                     value={dayjs(foodData.dateTime)}
                     onChange={handleDateTimeChange}
                     renderInput={(params) => <TextField {...params} />}

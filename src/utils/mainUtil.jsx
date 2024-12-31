@@ -3,7 +3,8 @@ export const carouselImages = [
   "https://i.ibb.co.com/gSC3yJk/chicken-skewers-with-slices-apples-chili-2829-19992.jpg",
 ];
 
-export const foods = [
+export const foods = 
+[
   {
     id: 1,
     name: "Margherita Pizza",
@@ -51,7 +52,7 @@ export const foods = [
     price: "$7.99",
     image: "https://i.ibb.co.com/t8cRt0z/lava-cake-1.jpg",
   },
-];
+]
 
 export const verifyPassword = (password) => {
   
