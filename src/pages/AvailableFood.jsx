@@ -23,7 +23,9 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 const AvailableFood = () => {
+  const navigate = useNavigate();
   const [addedFoods, setAddedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -169,7 +171,7 @@ const AvailableFood = () => {
                     justifyContent: "flex-end",
                   }}
                 >
-                  <Button variant="contained" size="small">
+                  <Button variant="contained" size="small" onClick={()=>navigate(`/available-foods/${foods._id}`)}>
                     View
                   </Button>
                   <Button variant="contained" size="small" color="warning">
