@@ -28,7 +28,7 @@ const AvailableFood = () => {
   const navigate = useNavigate();
   const [addedFoods, setAddedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-console.log(addedFoods)
+  console.log(addedFoods);
   const filterByStatus = addedFoods.filter(
     (item) => item.status === "Available"
   );
@@ -171,14 +171,12 @@ console.log(addedFoods)
                     justifyContent: "flex-end",
                   }}
                 >
-                  <Button variant="contained" size="small" onClick={()=>navigate(`/available-foods/${foods._id}`)}>
-                    View
-                  </Button>
-                  <Button variant="contained" size="small" color="warning">
-                    Update
-                  </Button>
-                  <Button variant="contained" size="small" color="error">
-                    Delete
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => navigate(`/available-foods/${foods._id}`)}
+                  >
+                    Click to Details
                   </Button>
                 </CardActions>
               </Card>

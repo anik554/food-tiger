@@ -14,8 +14,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Loader from "../common/Loader";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const ManageFoods = () => {
+    const navigate = useNavigate()
   const [manageFoods, setManageFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -78,7 +80,7 @@ const ManageFoods = () => {
                   <TableCell> {food.status} </TableCell>
                   <TableCell>
                     <Box sx={{display:"flex", alignItems:"center",gap:1}}>
-                      <Button variant="contained" size="small" color="success">
+                      <Button variant="contained" size="small" color="success" onClick={()=>navigate(`/manage-my-foods/${food._id}`)}>
                         Update
                       </Button>
                       <Button variant="contained" size="small" color="error">
