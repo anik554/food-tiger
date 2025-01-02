@@ -85,7 +85,7 @@ const AddFood = () => {
     <Box width="100%" py={2}>
       <Paper elevation={2} sx={{ p: 4, maxWidth: 800, mx: "auto" }}>
         <Typography gutterBottom variant="h6" textAlign="center">
-          Create Food
+          Create Food Item
         </Typography>
         <Box component="div" width="100%">
           <form onSubmit={handleSubmit}>

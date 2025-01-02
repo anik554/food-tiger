@@ -28,7 +28,7 @@ const AvailableFood = () => {
   const navigate = useNavigate();
   const [addedFoods, setAddedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+console.log(addedFoods)
   const filterByStatus = addedFoods.filter(
     (item) => item.status === "Available"
   );
