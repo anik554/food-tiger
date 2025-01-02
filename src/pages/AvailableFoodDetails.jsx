@@ -84,7 +84,6 @@ const AvailableFoodDetails = () => {
       notes: requestInfo.notes,
       status: requestInfo.status,
     };
-    console.log(payload)
     const updateStatus={
         status:requestInfo.status
     }

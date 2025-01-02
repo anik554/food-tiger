@@ -24,11 +24,11 @@ import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import NoDataFound from "../common/NoDataFound";
 const AvailableFood = () => {
   const navigate = useNavigate();
   const [addedFoods, setAddedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(addedFoods);
   const filterByStatus = addedFoods.filter(
     (item) => item.status === "Available"
   );
@@ -57,6 +57,7 @@ const AvailableFood = () => {
   }, []);
   return (
     <Box width={"100%"} py={2}>
+      {addedFoods.length > 0 ?
       <Grid container spacing={2}>
         <Grid size={4}>
           <TextField
@@ -183,7 +184,8 @@ const AvailableFood = () => {
             </Grid>
           ))
         )}
-      </Grid>
+      </Grid> : <NoDataFound />
+      }
     </Box>
   );
 };

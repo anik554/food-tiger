@@ -56,7 +56,6 @@ const UpdateMangeFood = () => {
     }));
   };
   const handleDateTimeChange = (newValue) => {
-    console.log(newValue);
     const formattedDateTime = newValue.format("YYYY-MM-DD h:mm A");
     setUpdatedInfo((prev) => ({
       ...prev,
@@ -79,7 +78,6 @@ const UpdateMangeFood = () => {
       status: updatedInfo.status,
       notes: updatedInfo.notes,
     };
-    console.log(payload);
     axios
       .put(`http://localhost:5000/availableFood/${_id}`, payload)
       .then((res) => {

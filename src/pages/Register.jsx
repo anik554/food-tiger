@@ -24,7 +24,6 @@ const Register = () => {
     email: "",
     password: "",
   });
-  console.log(userInfo);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo((prev) => ({

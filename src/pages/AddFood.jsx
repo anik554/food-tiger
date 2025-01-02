@@ -31,9 +31,6 @@ const AddFood = () => {
     status: "Available",
     notes: "",
   });
-
-  console.log(foodData);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFoodData((prev) => ({
@@ -43,7 +40,6 @@ const AddFood = () => {
   };
 
   const handleDateTimeChange = (newValue) => {
-    console.log(newValue);
     const formattedDateTime = newValue.format("YYYY-MM-DD h:mm A");
     setFoodData((prev) => ({
       ...prev,
@@ -66,7 +62,6 @@ const AddFood = () => {
       status: foodData.status,
       notes: foodData.notes,
     };
-    console.log(payload);
     axios
       .post("http://localhost:5000/addFood", payload)
       .then((res) => {
