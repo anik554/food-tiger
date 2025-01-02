@@ -7,10 +7,10 @@ import {
   CardMedia,
   IconButton,
   Typography,
-  Grid,
   CardActions,
   Button,
-  Divider,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -20,16 +20,27 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Grid from "@mui/material/Grid2";
+import SearchIcon from "@mui/icons-material/Search";
+import dayjs from "dayjs";
 const AvailableFood = () => {
   const [addedFoods, setAddedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(addedFoods);
 
-  const filterByStatus = addedFoods.filter((item)=>item.status === "Available")
-  console.log(filterByStatus)
+  const filterByStatus = addedFoods.filter(
+    (item) => item.status === "Available"
+  );
+
+  const sortedFoods = () => {
+    const sortedArray = [...filterByStatus].sort(
+      (a, b) => dayjs(a.dateTime) - dayjs(b.dateTime)
+    );
+    setAddedFoods(sortedArray);
+  };
+
   useEffect(() => {
     axios
-      .get("http://localhost:5000/addFood")
+      .get("http://localhost:5000/availableFoods")
       .then((res) => {
         if (res.data) {
           setAddedFoods(res.data);
@@ -40,17 +51,44 @@ const AvailableFood = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(setIsLoading(false));
+      });
   }, []);
   return (
     <Box width={"100%"} py={2}>
       <Grid container spacing={2}>
+        <Grid size={4}>
+          <TextField
+            fullWidth
+            label="Search"
+            size="small"
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </Grid>
+        <Grid size={2}>
+          <Button variant="contained">Search</Button>
+        </Grid>
+        <Grid size={6}>
+          <Button
+            variant="contained"
+            sx={{ float: "right" }}
+            onClick={sortedFoods}
+          >
+            Sort by Expire date
+          </Button>
+        </Grid>
         {isLoading ? (
           <Loader />
         ) : (
-            filterByStatus.map((foods) => (
-            <Grid key={foods._id} item xs={3}>
+          filterByStatus.map((foods) => (
+            <Grid key={foods._id} size={3}>
               <Card sx={{ height: "550px", position: "relative" }}>
                 <CardHeader
                   avatar={
@@ -114,7 +152,10 @@ const AvailableFood = () => {
                       &nbsp; {foods.status}{" "}
                     </Typography>
                   </Box>
-                  <Typography variant="body2" sx={{ color: "text.secondary", mt:1 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary", mt: 1 }}
+                  >
                     {foods.notes}
                   </Typography>
                 </CardContent>
@@ -124,11 +165,13 @@ const AvailableFood = () => {
                     bottom: "5%",
                     left: 0,
                     right: 0,
-                    height: "1px", 
-                    justifyContent:"flex-end"
+                    height: "1px",
+                    justifyContent: "flex-end",
                   }}
                 >
-                  <Button variant="contained" size="small">View</Button>
+                  <Button variant="contained" size="small">
+                    View
+                  </Button>
                   <Button variant="contained" size="small" color="warning">
                     Update
                   </Button>
